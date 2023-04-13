@@ -110,7 +110,7 @@ public class SimpleCalc extends JFrame implements ActionListener {
 			try {
 				Evaluate();
 			}
-			catch(Exception e1) {
+			catch(Exception ex) {
 				//?
 			}
 		}
