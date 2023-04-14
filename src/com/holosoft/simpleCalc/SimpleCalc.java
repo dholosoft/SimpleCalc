@@ -19,8 +19,7 @@ import javax.swing.border.BevelBorder;
 @SuppressWarnings("serial")
 public class SimpleCalc extends JFrame implements ActionListener {
 	JLabel result;
-	long NUM1;
-	long NUM2;
+	long NUM1, NUM2;
 	
 	public SimpleCalc() {
 		super("Simple Calculator by Choi GeumGyu");
