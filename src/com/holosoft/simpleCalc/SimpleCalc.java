@@ -13,6 +13,7 @@ import javax.script.ScriptException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
@@ -111,7 +112,8 @@ public class SimpleCalc extends JFrame implements ActionListener {
 				Evaluate();
 			}
 			catch(Exception ex) {
-				//?
+				JOptionPane.showMessageDialog(null, "예외가 발생했습니다.", "예외 발생!!", JOptionPane.CANCEL_OPTION);
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -121,7 +123,7 @@ public class SimpleCalc extends JFrame implements ActionListener {
 		result.setText(old + "=");
 		
 		ScriptEngineManager sem = new ScriptEngineManager();
-		ScriptEngine engine = sem.getEngineByName("JavaScript");
+		ScriptEngine engine = sem.getEngineByName("nashorn");
 		int res = (int)engine.eval(old);
 
 		result.setText(result.getText() + res);
