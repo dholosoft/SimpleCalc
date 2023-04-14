@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+@SuppressWarnings("serial")
 public class SimpleCalc extends JFrame implements ActionListener {
 	JLabel result;
 	long NUM1;
@@ -92,6 +93,7 @@ public class SimpleCalc extends JFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
+		String op = new String("");
 		String old = result.getText();
 		
 		if (old == "0") {
@@ -109,6 +111,7 @@ public class SimpleCalc extends JFrame implements ActionListener {
 				if (old.indexOf("+") <= -1) {
 					NUM1 = Long.parseLong(old);
 					result.setText(old + "+");
+					op = "add";
 				}
 			}
 		}
@@ -131,7 +134,7 @@ public class SimpleCalc extends JFrame implements ActionListener {
 			NUM2 = Long.parseLong(old.substring(old.indexOf("+") + 1));
 			
 			try {
-				Evaluate();
+				Evaluate(op);
 			}
 			catch(Exception ex) {
 				JOptionPane.showMessageDialog(null, "예외가 발생했습니다.", "예외 발생!!", JOptionPane.CANCEL_OPTION);
@@ -140,8 +143,20 @@ public class SimpleCalc extends JFrame implements ActionListener {
 		}
 	}
 	
-	public void Evaluate() throws Exception {
-		Long ans = NUM1 + NUM2;
+	public void Evaluate(String operation) throws Exception {
+		Long ans = 0L;
+		
+		switch(operation) {
+			case "add" : ans = NUM1 + NUM2; break;
+			case "minus" : ans = NUM1 - NUM2; break;
+			case "multiply" : ans = NUM1 * NUM2; break;
+			case "divide" : 
+				if (NUM2 == 0L) {
+					JOptionPane.showMessageDialog(null, "수학적으로 불능입니다.", "불능", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				ans = NUM1 / NUM2; break;
+		}
 
 		result.setText(result.getText() + "=" + ans.toString());
 	}
