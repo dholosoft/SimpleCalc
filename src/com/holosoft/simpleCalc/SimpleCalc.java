@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,11 +18,16 @@ import javax.swing.border.BevelBorder;
 
 public class SimpleCalc extends JFrame implements ActionListener {
 	JLabel result;
+	long NUM1;
+	long NUM2;
 	
 	public SimpleCalc() {
 		super("Simple Calculator by Choi GeumGyu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		
+		NUM1 = Long.MIN_VALUE;
+		NUM2 = Long.MIN_VALUE;
 		
 		result = new JLabel("0");
 		result.setFont(new Font("맑은 고딕", Font.BOLD, 18));
@@ -30,6 +37,7 @@ public class SimpleCalc extends JFrame implements ActionListener {
 		
 		pack();
 		setSize(400, 250);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
@@ -52,22 +60,34 @@ public class SimpleCalc extends JFrame implements ActionListener {
 	}
 	
 	void displayButtons(JPanel body) {
-		JButton b1 = new JButton("1"); b1.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b1.addActionListener(this); body.add(b1); 
-		JButton b2 = new JButton("2"); b2.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b2.addActionListener(this); body.add(b2);
-		JButton b3 = new JButton("3"); b3.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b3.addActionListener(this); body.add(b3);
-		JButton b_add = new JButton("+"); b_add.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b_add.addActionListener(this); body.add(b_add);
-		JButton b4 = new JButton("4"); b4.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b4.addActionListener(this); body.add(b4);
-		JButton b5 = new JButton("5"); b5.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b5.addActionListener(this); body.add(b5);
-		JButton b6 = new JButton("6"); b6.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b6.addActionListener(this); body.add(b6);
-		JButton b_minus = new JButton("-"); b_minus.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b_minus.addActionListener(this); body.add(b_minus);
-		JButton b7 = new JButton("7"); b7.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b7.addActionListener(this); body.add(b7);
-		JButton b8 = new JButton("8"); b8.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b8.addActionListener(this); body.add(b8);
-		JButton b9 = new JButton("9"); b9.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b9.addActionListener(this); body.add(b9);
-		JButton b_mul = new JButton("×"); b_mul.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b_mul.addActionListener(this); body.add(b_mul);
-		JButton b_div = new JButton("÷"); b_div.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b_div.addActionListener(this); body.add(b_div);
-		JButton b0 = new JButton("0"); b0.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b0.addActionListener(this); body.add(b0);
-		JButton b_mod = new JButton("C"); b_mod.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b_mod.addActionListener(this); body.add(b_mod);
-		JButton b_result = new JButton("＝"); b_result.setFont(new Font("맑은 고딕", Font.BOLD, 16)); b_result.addActionListener(this); body.add(b_result);
+		Map<Integer, JButton> buttons = new HashMap<Integer, JButton>();
+		
+		for(int i = 1; i <= 16; i++) {
+			buttons.put(Integer.valueOf(i), new JButton());
+			buttons.get(Integer.valueOf(i)).setFont(new Font("맑은 고딕", Font.BOLD, 16));
+			buttons.get(Integer.valueOf(i)).addActionListener(this);
+			
+			switch(i) {
+				case 1 : buttons.get(Integer.valueOf(i)).setText("1"); break;
+				case 2 : buttons.get(Integer.valueOf(i)).setText("2"); break;
+				case 3 : buttons.get(Integer.valueOf(i)).setText("3"); break;
+				case 4 : buttons.get(Integer.valueOf(i)).setText("+"); break;
+				case 5 : buttons.get(Integer.valueOf(i)).setText("4"); break;
+				case 6 : buttons.get(Integer.valueOf(i)).setText("5"); break;
+				case 7 : buttons.get(Integer.valueOf(i)).setText("6"); break;
+				case 8 : buttons.get(Integer.valueOf(i)).setText("-"); break;
+				case 9 : buttons.get(Integer.valueOf(i)).setText("7"); break;
+				case 10 : buttons.get(Integer.valueOf(i)).setText("8"); break;
+				case 11 : buttons.get(Integer.valueOf(i)).setText("9"); break;
+				case 12 : buttons.get(Integer.valueOf(i)).setText("×"); break;
+				case 13 : buttons.get(Integer.valueOf(i)).setText("÷"); break;
+				case 14 : buttons.get(Integer.valueOf(i)).setText("0"); break;
+				case 15 : buttons.get(Integer.valueOf(i)).setText("C"); break;
+				case 16 : buttons.get(Integer.valueOf(i)).setText("＝"); break;
+			}
+			
+			body.add(buttons.get(Integer.valueOf(i)));
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -86,7 +106,10 @@ public class SimpleCalc extends JFrame implements ActionListener {
 		}
 		else if (command == "+") {
 			if (old.length() >= 1 && old.substring(old.length() - 1) != "+") {
-				result.setText(old + "+");
+				if (old.indexOf("+") <= -1) {
+					NUM1 = Long.parseLong(old);
+					result.setText(old + "+");
+				}
 			}
 		}
 		else if (command == "-") {
@@ -105,24 +128,28 @@ public class SimpleCalc extends JFrame implements ActionListener {
 			}
 		}
 		else if (command == "＝" && old.length() >= 3) {
+			NUM2 = Long.parseLong(old.substring(old.indexOf("+") + 1));
+			
 			try {
 				Evaluate();
 			}
 			catch(Exception ex) {
 				JOptionPane.showMessageDialog(null, "예외가 발생했습니다.", "예외 발생!!", JOptionPane.CANCEL_OPTION);
-				//ex.printStackTrace();
+				ex.printStackTrace();
 			}
 		}
 	}
 	
 	public void Evaluate() throws Exception {
-		String old = result.getText();
-		
-		result.setText(old + "=");
+		Long ans = NUM1 + NUM2;
+
+		result.setText(result.getText() + "=" + ans.toString());
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.println("SimpleCalc를 실행합니다...");
+		
 		new SimpleCalc();
 	}
 }
