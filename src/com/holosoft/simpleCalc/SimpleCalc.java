@@ -6,8 +6,10 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.swing.JButton;
@@ -113,20 +115,20 @@ public class SimpleCalc extends JFrame implements ActionListener {
 			}
 			catch(Exception ex) {
 				JOptionPane.showMessageDialog(null, "예외가 발생했습니다.", "예외 발생!!", JOptionPane.CANCEL_OPTION);
-				ex.printStackTrace();
+				//ex.printStackTrace();
 			}
 		}
 	}
 	
 	public void Evaluate() throws ScriptException {
 		String old = result.getText();
-		result.setText(old + "=");
 		
-		ScriptEngineManager sem = new ScriptEngineManager();
-		ScriptEngine engine = sem.getEngineByName("nashorn");
-		int res = (int)engine.eval(old);
-
-		result.setText(result.getText() + res);
+		result.setText(old + "=");
+		ScriptEngine engine = new ScriptEngineManager().getEngineByName("graal.js");
+		result.setText(result.getText() + engine.eval(old).toString());
+		
+		List<ScriptEngineFactory> list = new ScriptEngineManager().getEngineFactories();
+		System.out.println(list.toString());
 	}
 	
 	public static void main(String[] args) {
