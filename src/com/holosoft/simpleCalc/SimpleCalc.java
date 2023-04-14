@@ -6,12 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineFactory;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -120,15 +115,10 @@ public class SimpleCalc extends JFrame implements ActionListener {
 		}
 	}
 	
-	public void Evaluate() throws ScriptException {
+	public void Evaluate() throws Exception {
 		String old = result.getText();
 		
 		result.setText(old + "=");
-		ScriptEngine engine = new ScriptEngineManager().getEngineByName("graal.js");
-		result.setText(result.getText() + engine.eval(old).toString());
-		
-		List<ScriptEngineFactory> list = new ScriptEngineManager().getEngineFactories();
-		System.out.println(list.toString());
 	}
 	
 	public static void main(String[] args) {
